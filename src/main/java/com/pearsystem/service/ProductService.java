@@ -20,29 +20,34 @@ public class ProductService {
         return saved;
     }
 
-    public Product getAllProducts(){
+    public List<Product> getAllProducts(){
        return productRepository.findAll();
 
     }
     public Product getProductById(int pid){
-        Product viewById= productRepository.findById(pid);
+        Product viewById= productRepository.findById(pid).orElseThrow(() -> new RuntimeException(pid+"   Product not found   "));
         return viewById;
 
     }
     public void deleteProduct(int pid){
-        productRepository.deleteById(pid);
+        Product byId=productRepository.findById(pid).orElseThrow(() -> new RuntimeException(pid+"   Product not found   "));
+        productRepository.delete(byId);
+
     }
     public Product updateProduct(int pid,Product newProduct){
-        Product oldProduct= productRepository.findById(pid);
+        Product oldProduct= productRepository.findById(pid).orElseThrow(()-> new RuntimeException(pid+"  Product not found  "));
 
+        oldProduct.setProduct_name(newProduct.getProduct_name());
         oldProduct.setProduct_description(newProduct.getProduct_description());
         oldProduct.setProduct_price(newProduct.getProduct_price());
         oldProduct.setProduct_quantity(newProduct.getProduct_quantity());
         oldProduct.setStock(newProduct.isStock());
-        oldProduct.setProduct_name(newProduct.getProduct_name());
-        oldProduct.setProduct_id(newProduct.getProduct_id());
+        oldProduct.setLive(newProduct.isLive());
+        oldProduct.setProduct_imageName(newProduct.getProduct_imageName());
+       Product save= productRepository.save(oldProduct);
+        return save;
         
-        return productRepository.save(oldProduct);
+
 
 
 
