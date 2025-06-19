@@ -1,6 +1,7 @@
 package com.pearsystem.controller;
 
 import com.pearsystem.model.Product;
+import com.pearsystem.payload.ProductDto;
 import com.pearsystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/product")
@@ -18,23 +18,23 @@ public class ProductController {
     private ProductService productService;
      // CREATE PRODUCT
     @PostMapping("/create")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product){
-       Product createProduct= productService.createProduct(product);
-       return new ResponseEntity<Product>(createProduct, HttpStatus.CREATED);
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto product){
+       ProductDto createProduct= productService.createProduct(product);
+       return new ResponseEntity<ProductDto>(createProduct, HttpStatus.CREATED);
 
     }
     // GET ALL PRODUCTS
     @GetMapping("/get_products")
-    public ResponseEntity<List<Product>> getAllProduct(){
-        List<Product> viewProduct= productService.getAllProducts();
+    public ResponseEntity<List<ProductDto>> getAllProduct(){
+        List<ProductDto> viewProduct= productService.getAllProducts();
         return new ResponseEntity<>(viewProduct, HttpStatus.OK);
 
 
     }
     // GET PRODUCT BY ID
     @GetMapping("/get_products/{productId}")
-    public ResponseEntity<Product >viewProductById(@PathVariable int productId){
-        Product viewProductById =productService.getProductById(productId);
+    public ResponseEntity<ProductDto >viewProductById(@PathVariable int productId){
+        ProductDto viewProductById =productService.getProductById(productId);
         return new ResponseEntity<>(viewProductById, HttpStatus.OK);
     }
     //DELETE PRODUCT
@@ -46,8 +46,8 @@ public class ProductController {
     }
     //UPDATE PRODUCT
     @PutMapping("/update/{productId}")
-    public  ResponseEntity<Product> updateProduct(@PathVariable int productId,@RequestBody  Product newproduct){
-      Product updateProduct=  productService.updateProduct(productId,newproduct);
+    public  ResponseEntity<ProductDto> updateProduct(@PathVariable int productId,@RequestBody  ProductDto newproduct){
+      ProductDto updateProduct=  productService.updateProduct(productId,newproduct);
         return new ResponseEntity<>(updateProduct, HttpStatus.OK);
     }
 }
