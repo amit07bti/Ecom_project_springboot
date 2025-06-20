@@ -1,9 +1,18 @@
 package com.pearsystem.service;
 
+import com.pearsystem.exception.ResourceNotFoundException;
+import com.pearsystem.model.Category;
 import com.pearsystem.model.Product;
+import com.pearsystem.payload.CategoryDto;
 import com.pearsystem.payload.ProductDto;
+import com.pearsystem.payload.ProductResponse;
+import com.pearsystem.repository.CategoryRepository;
 import com.pearsystem.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,22 +24,52 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-    public ProductDto createProduct(ProductDto product){
+    public ProductDto createProduct(ProductDto productDto,int catid){
+        //Fetch category is available or not
+        Category cat= this.categoryRepository.findById(catid).orElseThrow(()-> new ResourceNotFoundException("Category not found"));
         // todo  -ProductDto to Product
-       Product entity= toEntity(product);
-      Product saved=  productRepository.save(entity);
+       Product product= toEntity(productDto);
+       product.setCategory(cat);
+       Product save=this.productRepository.save(product);
+
+//      Product saved=  productRepository.save(entity);
       // todo  --Product to ProductDto
-        ProductDto dto=toDto(saved);
+        ProductDto dto=toDto(save);
         return dto;
     }
 
-    public List<ProductDto> getAllProducts(){
+    public ProductResponse getAllProducts(int pageNumber, int pageSize, String sortBy, String shortDir){
+
+        Sort sort=null;
+
+        if(shortDir.trim().toLowerCase().equals("asc")){
+          sort=Sort.by(sortBy).ascending();
+            System.out.println(sort);
+        }else {
+            sort=Sort.by(sortBy).descending();
+            System.out.println(sort);
+
+        }
+      Pageable pageable= PageRequest.of(pageNumber,pageSize,sort);
+        Page<Product> page= this.productRepository.findAll(pageable);
+        List<Product> pageProduct= page.getContent();
+
+        List<ProductDto> productDto= pageProduct.stream().map(p->this.toDto(p)).collect(Collectors.toList());
+
+        ProductResponse response=new ProductResponse();
+        response.setContent(productDto);
+        response.setPageNumber(page.getNumber());
+        response.setPageSize(page.getSize());
+        response.setTotalPages(page.getTotalPages());
+        response.setLastPage(page.isLast());
         //TODO ProductDto to Product
-        List<Product> findAll=productRepository.findAll();
+       // List<Product> findAll=productRepository.findAll();
         //todo  Product to ProductDto
-       List<ProductDto> findAllDto= findAll.stream().map(product -> this.toDto(product)).collect(Collectors.toList());
-       return findAllDto;
+      // List<ProductDto> findAllDto= findAll.stream().map(product -> this.toDto(product)).collect(Collectors.toList());
+       return response;
 
     }
     public ProductDto getProductById(int pid){
@@ -88,6 +127,14 @@ public class ProductService {
         pDto.setProduct_imageName(product.getProduct_imageName());
         pDto.setLive(product.isLive());
         pDto.setStock(product.isStock());
+
+        //Change Category to CategoryDto
+        CategoryDto catDto= new CategoryDto();
+        catDto.setCategoryId(product.getCategory().getCategoryId());
+        catDto.setTitle(product.getCategory().getTitle());
+
+        // Then Set category Dto in Product Dto
+        pDto.setCategory(catDto);
         return pDto;
 
 

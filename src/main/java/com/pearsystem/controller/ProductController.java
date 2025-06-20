@@ -1,7 +1,9 @@
 package com.pearsystem.controller;
 
 import com.pearsystem.model.Product;
+import com.pearsystem.payload.AppConstants;
 import com.pearsystem.payload.ProductDto;
+import com.pearsystem.payload.ProductResponse;
 import com.pearsystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,17 +19,21 @@ public class ProductController {
     @Autowired
     private ProductService productService;
      // CREATE PRODUCT
-    @PostMapping("/create")
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto product){
-       ProductDto createProduct= productService.createProduct(product);
+    @PostMapping("/create/{catid}")
+
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto product,@PathVariable int catid){
+       ProductDto createProduct= productService.createProduct(product,catid);
        return new ResponseEntity<ProductDto>(createProduct, HttpStatus.CREATED);
 
     }
     // GET ALL PRODUCTS
-    @GetMapping("/get_products")
-    public ResponseEntity<List<ProductDto>> getAllProduct(){
-        List<ProductDto> viewProduct= productService.getAllProducts();
-        return new ResponseEntity<>(viewProduct, HttpStatus.OK);
+    @GetMapping("/get_all_products")
+    public ProductResponse getAllProduct(@RequestParam (value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER_STRING,required = false) int pageNumber,
+                                                          @RequestParam (value = "pageSize",defaultValue = AppConstants.PAGE_SIZE_STRING,required = false)int pageSize,
+                                                          @RequestParam (value = "sortBy",defaultValue = AppConstants.SHORT_BY_STRING,required = false)String sortBy,
+                                                          @RequestParam (value = "sortDir",defaultValue = AppConstants.SHORT_DIRECTION_STRING,required = false) String shortDir){
+        ProductResponse response = productService.getAllProducts(pageNumber,pageSize,sortBy,shortDir);
+        return response;
 
 
     }

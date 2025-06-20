@@ -7,15 +7,33 @@ import jakarta.persistence.*;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "product_id")
     private int product_id;
+    @Column(name = "product_name")
     private String product_name;
+    @Column(name = "product_price")
     private double product_price;
+    @Column(name = "stock")
     private boolean stock;
+    @Column(name = "product_quantity")
     private int product_quantity;
+    @Column(name = "live")
     private boolean live;
+    @Column(name = "product_imageName")
     private  String product_imageName;
+    @Column(name = "product_description")
     private  String product_description;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Category category;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public int getProduct_id() {
         return product_id;

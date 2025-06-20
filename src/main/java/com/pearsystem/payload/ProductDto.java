@@ -11,11 +11,16 @@ public class ProductDto {
     private  String product_imageName;
     private  String product_description;
 
+//    public ProductDto() {
+//        super();
+//    }
+private CategoryDto category;
+
     public ProductDto() {
         super();
     }
 
-    public ProductDto(int product_id, String product_name, double product_price, boolean stock, int product_quantity, boolean live, String product_imageName, String product_description) {
+    public ProductDto(int product_id, String product_name, double product_price, boolean stock, int product_quantity, boolean live, String product_imageName, String product_description, CategoryDto category) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.product_price = product_price;
@@ -24,7 +29,9 @@ public class ProductDto {
         this.live = live;
         this.product_imageName = product_imageName;
         this.product_description = product_description;
+        this.category = category;
     }
+
 
     public int getProduct_id() {
         return product_id;
@@ -88,5 +95,12 @@ public class ProductDto {
 
     public void setProduct_description(String product_description) {
         this.product_description = product_description;
+    }
+    public CategoryDto getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryDto category) {
+        this.category = category;
     }
 }
