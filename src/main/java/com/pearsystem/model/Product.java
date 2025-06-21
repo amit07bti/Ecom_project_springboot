@@ -8,7 +8,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
-    private int product_id;
+    private int productId;
     @Column(name = "product_name")
     private String product_name;
     @Column(name = "product_price")
@@ -35,12 +35,12 @@ public class Product {
         this.category = category;
     }
 
-    public int getProduct_id() {
-        return product_id;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(int product_id) {
-        this.product_id = product_id;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public String getProduct_name() {

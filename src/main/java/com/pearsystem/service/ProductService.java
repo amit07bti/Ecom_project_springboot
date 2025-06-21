@@ -41,11 +41,11 @@ public class ProductService {
         return dto;
     }
 
-    public ProductResponse getAllProducts(int pageNumber, int pageSize, String sortBy, String shortDir){
+    public ProductResponse getAllProducts(int pageNumber, int pageSize, String sortBy, String sortDir){
 
         Sort sort=null;
 
-        if(shortDir.trim().toLowerCase().equals("asc")){
+        if(sortDir.trim().toLowerCase().equals("asc")){
           sort=Sort.by(sortBy).ascending();
             System.out.println(sort);
         }else {
@@ -56,6 +56,7 @@ public class ProductService {
       Pageable pageable= PageRequest.of(pageNumber,pageSize,sort);
         Page<Product> page= this.productRepository.findAll(pageable);
         List<Product> pageProduct= page.getContent();
+
 
         List<ProductDto> productDto= pageProduct.stream().map(p->this.toDto(p)).collect(Collectors.toList());
 
@@ -105,7 +106,7 @@ public class ProductService {
     // todo  ProductDto to Product
     public Product toEntity(ProductDto productDto){
         Product p= new Product();
-        p.setProduct_id(productDto.getProduct_id());
+        p.setProductId(productDto.getProductId());
         p.setProduct_name(productDto.getProduct_name());
         p.setProduct_description(productDto.getProduct_description());
         p.setProduct_price(productDto.getProduct_price());
@@ -119,7 +120,7 @@ public class ProductService {
     //todo  -- Product to ProductDto
     public ProductDto toDto(Product product){
         ProductDto pDto= new ProductDto();
-        pDto.setProduct_id(product.getProduct_id());
+        pDto.setProductId(product.getProductId());
         pDto.setProduct_name(product.getProduct_name());
         pDto.setProduct_description(product.getProduct_description());
         pDto.setProduct_price(product.getProduct_price());
@@ -129,12 +130,21 @@ public class ProductService {
         pDto.setStock(product.isStock());
 
         //Change Category to CategoryDto
-        CategoryDto catDto= new CategoryDto();
-        catDto.setCategoryId(product.getCategory().getCategoryId());
-        catDto.setTitle(product.getCategory().getTitle());
+//        CategoryDto catDto= new CategoryDto();
+//        catDto.setCategoryId(product.getCategory().getCategoryId());
+//        catDto.setTitle(product.getCategory().getTitle());
+        if (product.getCategory() != null) {
+            CategoryDto catDto = new CategoryDto();
+            catDto.setCategoryId(product.getCategory().getCategoryId());
+            catDto.setTitle(product.getCategory().getTitle());
+            pDto.setCategory(catDto);
+        } else {
+            // Optional: handle null category gracefully
+            pDto.setCategory(null);
+        }
 
         // Then Set category Dto in Product Dto
-        pDto.setCategory(catDto);
+//        pDto.setCategory(catDto);
         return pDto;
 
 

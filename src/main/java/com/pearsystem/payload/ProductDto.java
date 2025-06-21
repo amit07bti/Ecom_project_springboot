@@ -2,7 +2,7 @@ package com.pearsystem.payload;
 
 public class ProductDto {
 
-    private int product_id;
+    private int productId;
     private String product_name;
     private double product_price;
     private boolean stock;
@@ -20,8 +20,8 @@ private CategoryDto category;
         super();
     }
 
-    public ProductDto(int product_id, String product_name, double product_price, boolean stock, int product_quantity, boolean live, String product_imageName, String product_description, CategoryDto category) {
-        this.product_id = product_id;
+    public ProductDto(int productId, String product_name, double product_price, boolean stock, int product_quantity, boolean live, String product_imageName, String product_description, CategoryDto category) {
+        this.productId = productId;
         this.product_name = product_name;
         this.product_price = product_price;
         this.stock = stock;
@@ -33,12 +33,12 @@ private CategoryDto category;
     }
 
 
-    public int getProduct_id() {
-        return product_id;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(int product_id) {
-        this.product_id = product_id;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public String getProduct_name() {

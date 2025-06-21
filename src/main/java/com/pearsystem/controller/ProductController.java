@@ -31,8 +31,8 @@ public class ProductController {
     public ProductResponse getAllProduct(@RequestParam (value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER_STRING,required = false) int pageNumber,
                                                           @RequestParam (value = "pageSize",defaultValue = AppConstants.PAGE_SIZE_STRING,required = false)int pageSize,
                                                           @RequestParam (value = "sortBy",defaultValue = AppConstants.SHORT_BY_STRING,required = false)String sortBy,
-                                                          @RequestParam (value = "sortDir",defaultValue = AppConstants.SHORT_DIRECTION_STRING,required = false) String shortDir){
-        ProductResponse response = productService.getAllProducts(pageNumber,pageSize,sortBy,shortDir);
+                                                          @RequestParam (value = "sortDir",defaultValue = AppConstants.SHORT_DIRECTION_STRING,required = false) String sortDir){
+        ProductResponse response = productService.getAllProducts(pageNumber,pageSize,sortBy,sortDir);
         return response;
 
 
