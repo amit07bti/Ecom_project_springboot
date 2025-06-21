@@ -1,5 +1,6 @@
 package com.pearsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -10,7 +11,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int categoryId;
     private String title;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Product> product;
 
@@ -38,7 +39,7 @@ public class Category {
     public void setTitle(String title) {
         this.title = title;
     }
-    public Set<Product> getProduct(Set<Product> product) {
+    public Set<Product> getProduct() {
         return product;
     }
     public void setProduct(Set<Product> product) {

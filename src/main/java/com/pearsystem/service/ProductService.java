@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -97,11 +98,16 @@ public class ProductService {
        Product save= productRepository.save(oldProduct);
        ProductDto dto=toDto(save);
         return dto;
-        
 
 
+    }
 
-
+    //find product by category
+    public List<ProductDto> findProductByCategory(int catId){
+      Category cat=this.categoryRepository.findById(catId).orElseThrow(() -> new ResourceNotFoundException("this id Category Not Found"));
+       List<Product> findByCategory= this.productRepository.findByCategory(cat);
+      List<ProductDto> collect= findByCategory.stream().map(product -> toDto(product)).collect(Collectors.toList());
+        return collect;
     }
     // todo  ProductDto to Product
     public Product toEntity(ProductDto productDto){

@@ -1,6 +1,4 @@
 package com.pearsystem.controller;
-
-import com.pearsystem.model.Product;
 import com.pearsystem.payload.AppConstants;
 import com.pearsystem.payload.ProductDto;
 import com.pearsystem.payload.ProductResponse;
@@ -56,4 +54,26 @@ public class ProductController {
       ProductDto updateProduct=  productService.updateProduct(productId,newproduct);
         return new ResponseEntity<>(updateProduct, HttpStatus.OK);
     }
+    //Find product by category Wise
+    @GetMapping("/category/{catId}")
+    public ResponseEntity <List<ProductDto> >getProductByCategory(@PathVariable int catId){
+        List<ProductDto> findProduct= this.productService.findProductByCategory(catId);
+        return new ResponseEntity <List<ProductDto>>(findProduct,  HttpStatus.ACCEPTED);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
